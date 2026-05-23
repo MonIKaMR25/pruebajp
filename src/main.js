@@ -33,6 +33,7 @@ const typeColors = {
 
 let pokemonListCache = [];
 let pokemonMapCache = new Map();
+let audioContext;
 
 initDarkMode();
 initRouting();
@@ -387,15 +388,16 @@ async function renderBattle() {
   }
 }
 
-function scorePokemon(pokemon, randomFn = Math.random) {
+function scorePokemon(pokemon) {
   const totalStats = pokemon.stats.reduce((acc, stat) => acc + stat.value, 0);
-  return totalStats + randomFn() * BATTLE_RANDOM_FACTOR;
+  return totalStats + Math.random() * BATTLE_RANDOM_FACTOR;
 }
 
 function playWinSound() {
   const audioContextClass = window.AudioContext || window.webkitAudioContext;
   if (!audioContextClass) return;
-  const ctx = new audioContextClass();
+  audioContext ||= new audioContextClass();
+  const ctx = audioContext;
   const o1 = ctx.createOscillator();
   const o2 = ctx.createOscillator();
   const gain = ctx.createGain();
