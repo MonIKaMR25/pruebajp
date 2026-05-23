@@ -3,6 +3,8 @@ const POKEMON_LIMIT = 60;
 const CAPTURED_KEY = 'pokeplay-captured';
 const DARK_KEY = 'pokeplay-dark';
 const BATTLE_RANDOM_FACTOR = 50;
+const BATTLE_ANIMATION_DURATION = 900;
+const MAX_STAT_VALUE = 120;
 
 const app = document.getElementById('app');
 const darkToggle = document.getElementById('dark-toggle');
@@ -232,10 +234,7 @@ async function renderPokemonDetail(id) {
                 (s) => `
               <div>
                 <div class="mb-1 flex justify-between text-sm"><span>${s.name.replace('-', ' ')}</span><span>${s.value}</span></div>
-                <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700"><div class="h-2 rounded-full bg-red-500" style="width:${Math.min(
-                  s.value,
-                  120
-                ) / 1.2}%"></div></div>
+                <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700"><div class="h-2 rounded-full bg-red-500" style="width:${Math.min(s.value, MAX_STAT_VALUE) / MAX_STAT_VALUE * 100}%"></div></div>
               </div>`
               )
               .join('')}
@@ -363,7 +362,7 @@ async function renderBattle() {
         <h3 class="font-bold">${capitalize(rival.name)}</h3>
       </div>`;
 
-      await new Promise((resolve) => setTimeout(resolve, 900));
+      await new Promise((resolve) => setTimeout(resolve, BATTLE_ANIMATION_DURATION));
 
       const myPower = scorePokemon(myPokemon);
       const rivalPower = scorePokemon(rival);
@@ -383,15 +382,15 @@ async function renderBattle() {
   }
 }
 
-function scorePokemon(pokemon) {
+function scorePokemon(pokemon, randomFn = Math.random) {
   const totalStats = pokemon.stats.reduce((acc, stat) => acc + stat.value, 0);
-  return totalStats + Math.random() * BATTLE_RANDOM_FACTOR;
+  return totalStats + randomFn() * BATTLE_RANDOM_FACTOR;
 }
 
 function playWinSound() {
-  const AudioCtx = window.AudioContext || window.webkitAudioContext;
-  if (!AudioCtx) return;
-  const ctx = new AudioCtx();
+  const audioContextClass = window.AudioContext || window.webkitAudioContext;
+  if (!audioContextClass) return;
+  const ctx = new audioContextClass();
   const o1 = ctx.createOscillator();
   const o2 = ctx.createOscillator();
   const gain = ctx.createGain();
