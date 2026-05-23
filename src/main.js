@@ -213,7 +213,8 @@ async function renderHome() {
     search.addEventListener('input', draw);
     typeFilter.addEventListener('change', draw);
     draw();
-  } catch {
+  } catch (error) {
+    console.error('Failed to load Pokemon list:', error);
     document.getElementById('list').innerHTML =
       '<p class="col-span-full rounded-2xl bg-white p-8 text-center dark:bg-slate-800">No se pudo cargar la lista desde PokeAPI.</p>';
   }
@@ -267,7 +268,8 @@ async function renderPokemonDetail(id) {
       captureBtn.textContent = '¡Capturado!';
       captureBtn.disabled = true;
     });
-  } catch {
+  } catch (error) {
+    console.error('Failed to load Pokemon detail:', error);
     app.innerHTML = '<p class="rounded-2xl bg-white p-8 text-center dark:bg-slate-800">No se pudo cargar el Pokémon.</p>';
   }
 }
@@ -328,7 +330,8 @@ async function renderMyPokedex() {
         renderMyPokedex();
       });
     });
-  } catch {
+  } catch (error) {
+    console.error('Failed to load captured Pokemon:', error);
     container.innerHTML =
       '<p class="col-span-full rounded-2xl bg-white p-8 text-center dark:bg-slate-800">No se pudo cargar tu colección.</p>';
   }
@@ -382,7 +385,8 @@ async function renderBattle() {
         )}</p>`
       );
     });
-  } catch {
+  } catch (error) {
+    console.error('Failed to load battle mode:', error);
     document.getElementById('battle-result').innerHTML =
       '<p class="md:col-span-2 rounded-2xl bg-white p-5 text-center dark:bg-slate-800">No se pudo cargar el modo batalla.</p>';
   }
