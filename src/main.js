@@ -5,6 +5,7 @@ const DARK_KEY = 'pokeplay-dark';
 const BATTLE_RANDOM_FACTOR = 50;
 const BATTLE_ANIMATION_DURATION = 900;
 const MAX_STAT_VALUE = 120;
+const BATTLE_SOUND_VOLUME = 0.02;
 
 const app = document.getElementById('app');
 const darkToggle = document.getElementById('dark-toggle');
@@ -133,6 +134,10 @@ function typeBadge(type) {
   return `<span class="${typeColors[type] || 'bg-slate-400'} rounded-full px-2.5 py-1 text-xs font-semibold uppercase tracking-wide">${type}</span>`;
 }
 
+function calculateStatBarWidth(value) {
+  return `${(Math.min(value, MAX_STAT_VALUE) / MAX_STAT_VALUE) * 100}%`;
+}
+
 function cardSkeleton() {
   return '<div class="skeleton h-64 rounded-2xl"></div>';
 }
@@ -234,7 +239,7 @@ async function renderPokemonDetail(id) {
                 (s) => `
               <div>
                 <div class="mb-1 flex justify-between text-sm"><span>${s.name.replace('-', ' ')}</span><span>${s.value}</span></div>
-                <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700"><div class="h-2 rounded-full bg-red-500" style="width:${Math.min(s.value, MAX_STAT_VALUE) / MAX_STAT_VALUE * 100}%"></div></div>
+                <div class="h-2 rounded-full bg-slate-200 dark:bg-slate-700"><div class="h-2 rounded-full bg-red-500" style="width:${calculateStatBarWidth(s.value)}"></div></div>
               </div>`
               )
               .join('')}
@@ -398,7 +403,7 @@ function playWinSound() {
   o2.type = 'sine';
   o1.frequency.value = 440;
   o2.frequency.value = 660;
-  gain.gain.value = 0.02;
+  gain.gain.value = BATTLE_SOUND_VOLUME;
   o1.connect(gain);
   o2.connect(gain);
   gain.connect(ctx.destination);
