@@ -2,6 +2,7 @@ const API_BASE = 'https://pokeapi.co/api/v2';
 const POKEMON_LIMIT = 60;
 const CAPTURED_KEY = 'pokeplay-captured';
 const DARK_KEY = 'pokeplay-dark';
+const BATTLE_RANDOM_FACTOR = 50;
 
 const app = document.getElementById('app');
 const darkToggle = document.getElementById('dark-toggle');
@@ -384,7 +385,7 @@ async function renderBattle() {
 
 function scorePokemon(pokemon) {
   const totalStats = pokemon.stats.reduce((acc, stat) => acc + stat.value, 0);
-  return totalStats + Math.random() * 50;
+  return totalStats + Math.random() * BATTLE_RANDOM_FACTOR;
 }
 
 function playWinSound() {

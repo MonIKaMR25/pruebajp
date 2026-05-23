@@ -11,7 +11,7 @@ SPA web de Pokémon creada con **HTML + TailwindCSS (CDN) + JavaScript modular**
 
 ## Ejecutar en local
 ```bash
-cd /home/runner/work/pruebajp/pruebajp
+cd <project-directory>
 python3 -m http.server 4173
 ```
 Abrir `http://localhost:4173`.
